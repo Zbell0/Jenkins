@@ -10,41 +10,50 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Fetch the source code from ${DIRECTORY_PATH}"
-                echo "Compile the code and generate any necessary artifacts"
+                echo "Code is built automatically through Gradle"
             }
         }
         stage('Test') {
             steps {
                 echo "Running unit tests"
-                echo "Running integration tests"
+                echo "Test is automatically done by Junit"
+            }
+            post{
+                success{
+                    mail to: 'but05051@gmail.com',
+                    subject: 'Build Status Email'.
+                    body: 'Build was successful'
+                }
             }
         }
         stage('Code Quality Check') {
             steps {
                 echo "Check the quality of the code"
+                 echo "Qaulity check for code is done by Coverity"
+
             }
         }
-        stage('Deploy') {
+        stage('Security Scan') {
             steps {
-                echo "Deploy the application to ${TESTING_ENVIRONMENT}"
+                echo "Scan the code for detecting vulnerabilities using Checkmarx "
             }
-        }
-        stage('Approval') {
-            steps {
-                script {
-                    sleep time: 10, unit: 'SECONDS'
+            post{
+                success{
+                    emailext (attatchlog:true , body:"This is the email test body",subject:'This is the test',to:but05051@gmail.com)
+                    // mail to: 'but05051@gmail.com',
+                    // subject: 'Build Status Email'.
+                    // body: 'Build was successful'
                 }
+            }
+        }
+        stage('Integration tests on staging') {
+            steps {
+                echo "Integration tests are run on the staging environment" 
             }
         }
         stage('Deploy to Production') {
             steps {
                 echo "Deploying code to ${PRODUCTION_ENVIRONMENT} environment"
-            }
-        }
-         stage('Complete') {
-            steps {
-                echo "Completed"
             }
         }
     }

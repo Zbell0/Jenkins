@@ -16,42 +16,39 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Running unit tests"
-                echo "Test is automatically done by JUnit"
+                echo "Test is automatically done by Junit"
             }
-            post {
-                success {
-                    mail(
-                        to: 'but05051@gmail.com',
-                        subject: 'Build Status Email',
-                        body: 'Build was successful'
-                    )
+            post{
+                success{
+                    mail to: 'but05051@gmail.com',
+                    subject: 'Build Status Email'.
+                    body: 'Build was successful'
                 }
             }
         }
         stage('Code Quality Check') {
             steps {
                 echo "Check the quality of the code"
-                echo "Quality check for code is done by Coverity"
+                 echo "Qaulity check for code is done by Coverity"
+
             }
         }
         stage('Security Scan') {
             steps {
-                echo "Scan the code for detecting vulnerabilities using Checkmarx"
+                echo "Scan the code for detecting vulnerabilities using Checkmarx "
             }
-            post {
-                success {
-                    emailext
-                        attachLog: true,
-                        body: "This is the email test body",
-                        subject: 'This is the test',
-                        to: 'but05051@gmail.com'
-                    
+            post{
+                success{
+                    emailext attatchlog:true , body:"This is the email test body",subject:'This is the test',to:but05051@gmail.com
+                    // mail to: 'but05051@gmail.com',
+                    // subject: 'Build Status Email'.
+                    // body: 'Build was successful'
                 }
             }
         }
         stage('Integration tests on staging') {
             steps {
-                echo "Integration tests are run on the staging environment"
+                echo "Integration tests are run on the staging environment" 
             }
         }
         stage('Deploy to Production') {
